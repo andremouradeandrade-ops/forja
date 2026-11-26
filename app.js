@@ -206,7 +206,7 @@ function vHome() {
       </div>
       <div class="grid">${tiles}</div>
     </div>
-  </div>${isDesk() ? vSheet(true) + '</div>' : ''}${nav('home')}${isDesk() ? '' : vSheet()}</div>`;
+  </div>${isDesk() ? vSheet(true) + '</div>' : ''}${nav('home')}${isDesk() ? '' : vSheet()}${vModal()}</div>`;
 }
 
 function vSheet(panel) {
