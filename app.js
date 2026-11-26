@@ -6,6 +6,8 @@ const KEY = 'forja.v1';
 const SEED = window.FORJA_SEED;
 const GUIAS = SEED.guias;
 const $app = document.getElementById('app');
+const MQ = window.matchMedia('(min-width: 1024px)');
+const isDesk = () => MQ.matches;
 
 /* ---------- utilidades ---------- */
 const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -155,6 +157,7 @@ function thumb(e) {
   return `<div class="thumb">${ic(n, 32, 1.75)}</div>`;
 }
 const nav = (cur) => `<nav class="nav" aria-label="Navegação principal">
+  <span class="brand" aria-hidden="true"><span class="logo">F</span>Forja</span>
   <button data-a="go" data-to="home" ${cur === 'home' ? 'aria-current="page"' : ''}>${ic('home', 24)}Treinos</button>
   <button data-a="go" data-to="fichas" ${cur === 'fichas' ? 'aria-current="page"' : ''}>${ic('list', 24)}Fichas</button>
   <button data-a="go" data-to="historico" ${cur === 'historico' ? 'aria-current="page"' : ''}>${ic('chart', 24)}Histórico</button>
@@ -182,12 +185,13 @@ function vHome() {
     const cls = (dias.has(t) ? ' done' : '') + (t === startOfDay(Date.now()) ? ' today' : '');
     return `<div class="d"><span>${l}</span><span class="dot${cls}">${d}</span></div>`;
   }).join('');
-  const tiles = S.fichas.map((f) => `<button class="tile" data-a="sheet" data-id="${esc(f.id)}" aria-label="${esc(f.nome)}${hoje && hoje.id === f.id ? ', sugerido para hoje' : ''}">
+  const selId = isDesk() ? (UI.sheet || (hoje ? hoje.id : null)) : null;
+  const tiles = S.fichas.map((f) => `<button class="tile${selId === f.id ? ' sel' : ''}" data-a="sheet" data-id="${esc(f.id)}" aria-label="${esc(f.nome)}${hoje && hoje.id === f.id ? ', sugerido para hoje' : ''}">
       ${hoje && hoje.id === f.id ? '<span class="tag tag-today">Hoje</span>' : ''}
       ${f.letra ? `<span class="letter">${esc(f.letra)}</span>` : ''}
       ${ill(f.ilustracao, 80)}<span class="h2">${esc(f.nome)}</span></button>`).join('');
-  return `<div class="screen"><div class="scroll">
-    <div style="padding:calc(24px + var(--safe-t)) 16px 0;display:flex;justify-content:space-between;align-items:center">
+  return `<div class="screen">${isDesk() ? '<div class="desk-row">' : ''}<div class="scroll">
+    <div class="home-head" style="padding:calc(24px + var(--safe-t)) 16px 0;display:flex;justify-content:space-between;align-items:center">
       <div><div class="muted" style="font-size:14px;line-height:24px">${DIAS[now.getDay()]}, ${now.getDate()} ${MESES[now.getMonth()]}</div>
       <div class="h1">Bora treinar</div></div>
       <div style="text-align:right"><div class="num" style="font-size:24px;line-height:32px">${semana}<span class="muted">/${S.meta}</span></div>
@@ -202,13 +206,14 @@ function vHome() {
       </div>
       <div class="grid">${tiles}</div>
     </div>
-  </div>${nav('home')}${vSheet()}</div>`;
+  </div>${isDesk() ? vSheet(true) + '</div>' : ''}${nav('home')}${isDesk() ? '' : vSheet()}</div>`;
 }
 
-function vSheet() {
-  if (!UI.sheet) return '';
-  const f = ficha(UI.sheet); if (!f) return '';
+function vSheet(panel) {
   const hoje = fichaDeHoje();
+  const sel = UI.sheet || (panel && hoje ? hoje.id : null) || (panel && S.fichas[0] ? S.fichas[0].id : null);
+  if (!sel) return '';
+  const f = ficha(sel); if (!f) return '';
   let meta, rows, more, cta;
   if (f.tipo === 'cardio') {
     const ult = S.sessoes.find((s) => s.fichaId === f.id);
@@ -219,10 +224,25 @@ function vSheet() {
   } else {
     const series = f.exercicios.reduce((a, e) => a + Number(e.series || 0), 0);
     meta = `${f.exercicios.length} exercícios · ${series} séries · ~${f.minutos} min`;
-    rows = f.exercicios.slice(0, 3).map((e) => [e.nome, valorEx(e)]);
+    rows = f.exercicios.slice(0, panel ? 99 : 3).map((e) => [e.nome, valorEx(e)]);
     more = `Ver os ${f.exercicios.length} exercícios`; cta = 'Começar treino';
   }
   const tag = f.tipo === 'cardio' ? `Cardio · ${f.subtitulo}` : `Treino ${f.letra}${hoje && hoje.id === f.id ? ' · Hoje' : ''}`;
+  if (panel) {
+    const ult = S.sessoes.find((s) => s.fichaId === f.id);
+    return `<aside class="dpanel" aria-label="Treino selecionado: ${esc(f.nome)}">
+      <div class="dp-head"><div style="display:flex;align-items:center;gap:16px"><div style="width:96px;height:96px;flex:none">${ill(f.ilustracao, 96)}</div>
+      <div style="min-width:0"><div class="eyebrow y">${esc(tag)}</div><div class="h1" style="font-size:36px;line-height:44px">${esc(f.nome)}</div></div></div>
+      <div class="muted" style="font-size:14px;margin-top:12px">${esc(meta)}</div>
+      <div class="chips">${f.musculos.map((m) => `<span class="chip">${esc(m)}</span>`).join('')}</div></div>
+      <div class="scroll" style="padding:0 28px">
+        ${f.tipo !== 'cardio' ? `<div class="lastbox" style="margin:4px 0 8px;height:48px;font-size:13px"><span style="display:flex;align-items:center;gap:8px">${ic('clockI', 16)}${ult ? 'Último treino · ' + haDias(ult.inicio) : 'Ainda não feito'}</span><span class="num" style="font-size:15px;color:var(--ink)">${ult ? fmtInt(volume(ult)) + ' kg' : ''}</span></div>` : ''}
+        ${rows.map((r, i) => `<div class="sheet-row" style="border-bottom:1px solid rgba(255,184,28,.16)"><span class="n">${f.tipo === 'cardio' ? '·' : i + 1}</span><span class="t">${esc(r[0])}</span><span class="num" style="font-size:14px">${esc(r[1])}</span></div>`).join('')}
+        <button class="link" data-a="go" data-to="ficha/${esc(f.id)}">${f.tipo === 'cardio' ? 'Ver detalhes da corrida' : 'Ver detalhes do treino'}${ic('chev', 16)}</button>
+      </div>
+      <div style="padding:20px 28px 28px;border-top:1px solid var(--raised)"><button class="btn" data-a="start" data-id="${esc(f.id)}">${esc(cta)}</button></div>
+    </aside>`;
+  }
   return `<div class="overlay">
     <button class="backdrop" data-a="closesheet" aria-label="Fechar"></button>
     <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(f.nome)}">
@@ -293,7 +313,7 @@ function vDetalhe(id) {
       <div class="eyebrow" style="margin-top:24px">${cardio ? 'Intensidade' : 'Músculos'}</div><div class="chips">${f.musculos.map((m) => `<span class="chip">${esc(m)}</span>`).join('')}</div>
       <div class="eyebrow" style="margin-top:16px">Equipamentos</div><div class="chips">${f.equipamentos.map((m) => `<span class="chip">${esc(m)}</span>`).join('')}</div>
       <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:32px"><span class="h2">${cardio ? 'Etapas' : 'Exercícios'}</span><span class="muted" style="font-size:13px">${cardio ? 'Ritmo alvo por km' : `Descanso ${f.descanso}s entre séries`}</span></div>
-      <div style="margin-top:8px">${list}</div>
+      <div class="exlist" style="margin-top:8px">${list}</div>
     </div>
   </div>
   <div class="bottombar">
@@ -342,7 +362,7 @@ function vTreino() {
   const a = S.ativa;
   if (!a) return `<div class="screen"><div class="empty" style="margin-top:30vh">Nenhum treino em andamento.<br><br><button class="btn" data-a="go" data-to="home">Ir para treinos</button></div></div>`;
   if (a.tipo === 'cardio') return vCorrida();
-  if (S.descanso) return vDescanso();
+  if (S.descanso && !isDesk()) return vDescanso();
   const n = a.exercicios.length;
   const e = a.exercicios[a.atual];
   const segs = a.exercicios.map((x, i) => {
@@ -381,6 +401,7 @@ function vTreino() {
       ${prox ? `<div class="muted" style="font-size:13px">A seguir: ${esc(prox.nome)}</div>` : ''}
     </div>`;
   }
+  if (isDesk()) return vTreinoDesk(a, card);
   return `<div class="screen"><div class="scroll" style="padding-bottom:16px">
     <div class="sess-top"><button class="icon-btn" data-a="minimizar" aria-label="Minimizar treino">${ic('minimize')}</button>
       <span class="muted" style="font-size:14px;font-weight:600;text-align:center;flex:1">${esc(nomeSessao(a))}</span>
@@ -399,6 +420,55 @@ function vTreino() {
     </div>
     <div class="pad"><button class="btn ghost" style="height:48px;font-size:14px;border-style:dashed" data-a="addexsess">${ic('plus', 16)}Adicionar exercício ao treino</button></div>
   </div>${vModal()}${vAddEx()}</div>`;
+}
+
+function restPanel() {
+  const a = S.ativa, r = S.descanso;
+  const prox = proximaSerie();
+  const C = 2 * Math.PI * 138;
+  const proxCard = prox ? `<div class="card" style="align-self:stretch;padding:16px;margin-top:auto"><div class="eyebrow">Próxima · série ${prox.s + 1}</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:4px"><span style="font-weight:600">${esc(prox.e.nome)}</span><span class="num" style="font-size:22px;white-space:nowrap">${fmtNum(prox.set.kg)}<span class="muted" style="font-size:13px;font-weight:500"> kg</span> × ${esc(repsTxt(prox.e, prox.set.reps))}</span></div></div>` : '';
+  if (!r) {
+    const e = a.exercicios[a.atual];
+    return `<aside class="rest-panel" aria-label="Descanso"><div style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--info)">Descanso</div>
+      <div class="ring" style="width:240px;opacity:.5"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="138" fill="none" stroke="#2E3238" stroke-width="12"/></svg><div class="t" style="font-size:64px">${e && e.descanso ? clock(e.descanso * 1000) : '—'}</div></div>
+      <p class="muted" style="font-size:14px;line-height:21px;text-align:center;margin:8px 0 0">O descanso começa sozinho quando você toca no ✓ de uma série.</p>${proxCard}</aside>`;
+  }
+  const left = r.fim - Date.now();
+  const frac = Math.max(0, Math.min(1, left / (r.total * 1000)));
+  return `<aside class="rest-panel" aria-label="Descanso"><div style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--info)">Descanso</div>
+    <div class="muted" style="font-size:13px;margin-top:4px">Série ${r.setIdx + 1} feita · ${esc((a.exercicios[r.exIdx] || {}).nome || '')}</div>
+    <div class="ring" role="timer" style="width:240px;margin-top:16px"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="138" fill="none" stroke="#2E3238" stroke-width="12"/>
+      <circle data-live="ring" cx="150" cy="150" r="138" fill="none" stroke="#6CB2FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - frac)}"/></svg>
+      <div class="t" style="font-size:64px" data-live="rest">${clock(left + 999)}</div></div>
+    <div style="display:flex;gap:12px;margin-top:12px"><button class="pill" data-a="restadj" data-d="-15">−15s</button><button class="pill" data-a="restadj" data-d="15">+15s</button></div>
+    ${proxCard}<button class="btn" style="margin-top:12px" data-a="restskip">Pular descanso</button></aside>`;
+}
+
+function vTreinoDesk(a, card) {
+  const n = a.exercicios.length;
+  const lista = a.exercicios.map((x, i) => {
+    const feitas = x.series.filter((s) => s.feita).length; const done = feitas === x.series.length && feitas > 0;
+    return `<button class="ex-nav${i === a.atual ? ' cur' : ''}" data-a="exgo" data-i="${i}">${thumb(x).replace('class="thumb"', 'class="thumb sm"')}
+      <span style="flex:1;min-width:0;text-align:left"><span style="display:block;font-size:14px;font-weight:600;${done ? 'color:var(--muted);text-decoration:line-through' : ''}">${esc(x.nome)}</span><span class="muted" style="font-size:12px">${feitas}/${x.series.length} séries</span></span>
+      ${done ? `<span class="check on" style="width:24px;height:24px;border-radius:8px">${ic('check', 14, 3)}</span>` : ''}</button>`;
+  }).join('');
+  return `<div class="screen">
+    <header class="sess-desk"><button class="icon-btn" data-a="minimizar" aria-label="Minimizar treino">${ic('minimize')}</button>
+      <div><div class="eyebrow y">Treino em andamento</div><div class="h2" style="font-size:22px;line-height:28px">${esc(nomeSessao(a))}</div></div>
+      <div style="flex:1"></div>
+      <div><div class="clock" style="font-size:44px;line-height:44px" data-live="clock">${clock(Date.now() - a.inicio)}</div><div class="muted" style="font-size:12px;margin-top:4px">Duração</div></div>
+      <div><div class="num" style="font-size:26px" data-live="vol">${fmtInt(volume(a))}</div><div class="muted" style="font-size:12px">kg volume</div></div>
+      <div><div class="num" style="font-size:26px"><span data-live="sets">${seriesFeitas(a)}</span><span class="muted">/${seriesTotal(a)}</span></div><div class="muted" style="font-size:12px">séries</div></div>
+      <button class="finish" style="height:56px;padding:0 28px;margin-left:8px" data-a="finalizar">Finalizar</button></header>
+    <div class="desk-row">
+      <aside class="ex-side scroll" aria-label="Exercícios do treino"><div class="eyebrow" style="padding:0 10px 8px">Exercícios · ${n ? a.atual + 1 : 0} de ${n}</div>${lista}
+        <button class="btn ghost" style="height:44px;font-size:14px;border-style:dashed;margin-top:8px" data-a="addexsess">${ic('plus', 16)}Adicionar exercício</button></aside>
+      <main class="scroll" style="padding:24px 0">${card}
+        <div class="exnav"><button class="btn ghost" data-a="exstep" data-d="-1" ${a.atual <= 0 ? 'disabled' : ''}>${ic('back', 18)}Anterior</button>
+        <button class="btn ghost" data-a="exstep" data-d="1" ${a.atual >= n - 1 ? 'disabled' : ''}>Próximo${ic('chev', 18)}</button></div></main>
+      ${restPanel()}
+    </div>${vModal()}${vAddEx()}</div>`;
 }
 
 function vDescanso() {
@@ -854,6 +924,7 @@ function tick() {
   }
 }
 setInterval(tick, 250);
+MQ.addEventListener('change', () => { UI.sheet = null; render(); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { S = load(); render(); } });
 window.addEventListener('storage', (e) => { if (e.key === KEY) { S = load(); render(); } });
 
