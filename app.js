@@ -639,18 +639,31 @@ function vGuia(exId) {
   const g = GUIAS[exId];
   if (!ex && !g) return vNotFound();
   const nome = ex ? ex.nome : exId;
-  return `<div class="screen"><div class="scroll"><div class="pad" style="padding-top:calc(16px + var(--safe-t));padding-bottom:24px">
-    <div style="display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:14px;font-weight:600">${ex ? esc(tituloFicha(ex.ficha)) : ''}</span><button class="icon-btn" data-a="back" aria-label="Fechar">${ic('close')}</button></div>
-    ${ex && ex.img ? `<div style="display:flex;justify-content:center;margin:16px 0 8px;padding:16px;border-radius:24px;background:radial-gradient(ellipse at 50% 70%,rgba(255,184,28,.25),rgba(255,184,28,0) 70%)"><img src="img/ex-${esc(ex.img)}.png" alt="" width="180" height="180" style="width:180px;height:180px;object-fit:contain"></div>` : '<div style="height:16px"></div>'}
-    <h1 class="h1">${esc(nome)}</h1>
-    ${ex ? `<div class="muted" style="font-size:14px;margin-top:4px">${esc(ex.equip)} · ${esc(valorEx(ex))} · ${ex.ficha.descanso}s de descanso</div><div class="chips"><span class="chip">${esc(ex.grupo)}</span></div>` : ''}
-    ${g ? `${g.dica ? `<div class="note" style="margin-top:16px"><b style="color:var(--primary-text)">Dica:</b> ${esc(g.dica)}</div>` : ''}
-      <div class="h2" style="margin-top:24px">Como fazer</div>
-      <ol class="steps" style="padding-left:20px;margin:12px 0 0">${g.passos.map((p) => `<li>${esc(p)}</li>`).join('')}</ol>
-      ${g.erro ? `<div class="note" style="border-color:rgba(255,107,111,.4)"><b style="color:var(--danger)">Erro comum:</b> ${esc(g.erro)}</div>` : ''}`
-    : '<div class="empty">Ainda não há instruções para este exercício.</div>'}
-    <div style="display:flex;gap:8px;margin-top:24px"><button class="btn ghost" data-a="go" data-to="evolucao/${esc(exId)}">Ver evolução</button><button class="btn" data-a="back">Entendi</button></div>
-  </div></div></div>`;
+  const sub = ex ? [ex.equip, `${ex.series} séries`, ex.unidade === 's' ? `${ex.reps} s` : `${ex.reps} reps`, `${ex.ficha.descanso}s`].filter(Boolean).join(' · ') : '';
+  const bulb = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFB81C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/></svg>';
+  const num = (i) => `<span style="flex:none;width:32px;height:32px;border-radius:999px;background:var(--raised);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:14px">${i}</span>`;
+  return `<div class="screen" style="background:#121316">
+    <div style="flex:none;height:calc(48px + var(--safe-t));padding-top:calc(16px + var(--safe-t));box-sizing:border-box;font-size:14px;font-weight:600;color:var(--muted);text-align:center">${ex ? esc(tituloFicha(ex.ficha)) : ''}</div>
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;background:var(--surface);border-radius:24px 24px 0 0">
+      <div style="flex:none;display:flex;justify-content:flex-end;padding:8px 8px 0;height:56px;box-sizing:border-box"><button class="icon-btn" style="border:0" data-a="back" aria-label="Fechar">${ic('close', 24)}</button></div>
+      <div class="scroll" style="padding:0 16px 24px"><div style="max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        ${ex && ex.img ? `<div style="display:flex;justify-content:center"><img src="img/ex-${esc(ex.img)}.png" alt="" width="220" height="220" style="width:220px;height:220px;object-fit:contain"></div>` : ''}
+        <div style="text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center">
+          <h1 class="h1">${esc(nome)}</h1>
+          ${sub ? `<div class="muted" style="font-size:14px">${esc(sub)}</div>` : ''}
+          ${ex && ex.grupo ? `<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px"><span style="font-size:12px;font-weight:600;padding:8px 16px;border-radius:999px;background:var(--primary-soft);color:var(--primary-text)">${esc(ex.grupo)}</span></div>` : ''}
+        </div>
+        ${g ? `${g.dica ? `<div style="display:flex;gap:16px;align-items:flex-start;padding:16px;border-radius:16px;background:var(--raised)"><span style="flex:none">${bulb}</span><span style="font-size:15px;line-height:24px"><b style="font-weight:600">Dica:</b> ${esc(g.dica)}</span></div>` : ''}
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Como fazer</div>
+            ${g.passos.map((t, i) => `<div style="display:flex;gap:16px;align-items:flex-start">${num(i + 1)}<span style="font-size:15px;line-height:24px;padding-top:4px">${esc(t)}</span></div>`).join('')}
+          </div>
+          ${g.erro ? `<div style="padding:16px;border-radius:16px;background:var(--primary-soft);font-size:15px;line-height:24px"><b style="font-weight:600;color:var(--primary)">Erro comum:</b> ${esc(g.erro)}</div>` : ''}`
+        : '<div class="empty">Ainda não há instruções para este exercício.</div>'}
+      </div></div>
+      <div style="flex:none;padding:16px 16px calc(16px + var(--safe-b));border-top:1px solid var(--raised);background:var(--surface)"><div style="max-width:560px;margin:0 auto"><button class="btn lg" data-a="back">Entendi</button></div></div>
+    </div>
+  </div>`;
 }
 
 function vModal() {
