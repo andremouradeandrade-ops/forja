@@ -152,7 +152,7 @@ function thumb(e) {
   else if (e.unidade === 's') n = 'tempo';
   else if (/polia/i.test(e.equip || '')) n = 'polia';
   else if (/corporal|banco|roda/i.test(e.equip || '')) n = 'corpo';
-  return `<div class="thumb" style="color:var(--muted)">${ic(n, 32, 1.75)}</div>`;
+  return `<div class="thumb">${ic(n, 32, 1.75)}</div>`;
 }
 const nav = (cur) => `<nav class="nav" aria-label="Navegação principal">
   <button data-a="go" data-to="home" ${cur === 'home' ? 'aria-current="page"' : ''}>${ic('home', 24)}Treinos</button>
