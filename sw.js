@@ -1,5 +1,5 @@
 // Forja — service worker: funciona sem internet depois da primeira visita.
-const CACHE = 'forja-v4';
+const CACHE = 'forja-v5';
 const CORE = [
   './', './index.html', './styles.css', './app.js', './data.js', './manifest.webmanifest',
   './img/icon-192.png', './img/icon-512.png', './img/icon-maskable-512.png', './img/apple-touch-icon.png',
