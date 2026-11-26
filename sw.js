@@ -1,5 +1,5 @@
 // Forja — service worker: funciona sem internet depois da primeira visita.
-const CACHE = 'forja-v6';
+const CACHE = 'forja-v7';
 const CORE = [
   './', './index.html', './styles.css', './app.js', './data.js', './manifest.webmanifest',
   './img/icon-192.png', './img/icon-512.png', './img/icon-maskable-512.png', './img/apple-touch-icon.png',
@@ -7,7 +7,8 @@ const CORE = [
   './img/cat-pernas.png', './img/cat-abdomen.png', './img/cat-corrida.png',
   './img/ex-agachamento.png', './img/ex-legpress.png', './img/ex-extensora.png', './img/ex-stiff.png',
   './img/ex-mesaflexora.png', './img/ex-panturrilha.png', './img/ex-afundo.png', './img/ex-supino.png',
-  './img/ex-crossover.png', './img/ex-crucifixo-maquina.png', './img/ex-encolhimento-halteres.png', './img/ex-flexao.png', './img/ex-hiperextensao.png', './img/ex-pulldown.png', './img/ex-puxada-frontal.png', './img/ex-remada-baixa.png', './img/ex-remada-curvada.png', './img/ex-supino-reto.png', './img/ex-triceps-corda.png'
+  './img/ex-crossover.png', './img/ex-crucifixo-maquina.png', './img/ex-encolhimento-halteres.png', './img/ex-flexao.png', './img/ex-hiperextensao.png', './img/ex-pulldown.png', './img/ex-puxada-frontal.png', './img/ex-remada-baixa.png', './img/ex-remada-curvada.png', './img/ex-supino-reto.png', './img/ex-triceps-corda.png',
+  './img/ex-desenvolvimento.png', './img/ex-elevacao-lateral.png', './img/ex-elevacao-frontal.png', './img/ex-encolhimento-barra.png', './img/ex-rosca-direta.png', './img/ex-prancha.png', './img/ex-crucifixo-inverso.png', './img/ex-triceps-testa.png', './img/ex-rosca-martelo.png', './img/ex-rosca-concentrada.png', './img/ex-rosca-punho.png', './img/ex-abdominal-infra.png', './img/ex-abdominal-polia.png', './img/ex-abdominal-obliquo.png', './img/ex-roda-abdominal.png'
 ];
 
 self.addEventListener('install', (e) => {

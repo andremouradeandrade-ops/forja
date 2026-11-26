@@ -42,34 +42,34 @@ window.FORJA_SEED = {
       id: 'ombros', letra: 'D', nome: 'Ombros', subtitulo: 'Ombros', tipo: 'forca', ilustracao: 'ombros', descanso: 75, minutos: 45,
       musculos: ['Deltoides', 'Trapézio'], equipamentos: ['Halteres', 'Máquina', 'Barra'],
       exercicios: [
-        { id: 'desenvolvimento', nome: 'Desenvolvimento com halteres', grupo: 'Deltoides', equip: 'Halteres', series: 4, reps: 8, kg: 20 },
-        { id: 'elevacao-lateral', nome: 'Elevação lateral', grupo: 'Deltoide lateral', equip: 'Halteres', series: 4, reps: 12, kg: 10 },
-        { id: 'elevacao-frontal', nome: 'Elevação frontal', grupo: 'Deltoide anterior', equip: 'Halteres', series: 3, reps: 12, kg: 8 },
-        { id: 'crucifixo-inverso', nome: 'Crucifixo inverso', grupo: 'Deltoide posterior', equip: 'Máquina', series: 4, reps: 12, kg: 30 },
-        { id: 'encolhimento-barra', nome: 'Encolhimento com barra', grupo: 'Trapézio', equip: 'Barra', series: 3, reps: 12, kg: 60 }
+        { id: 'desenvolvimento', nome: 'Desenvolvimento com halteres', grupo: 'Deltoides', equip: 'Halteres', series: 4, reps: 8, kg: 20, img: 'desenvolvimento' },
+        { id: 'elevacao-lateral', nome: 'Elevação lateral', grupo: 'Deltoide lateral', equip: 'Halteres', series: 4, reps: 12, kg: 10, img: 'elevacao-lateral' },
+        { id: 'elevacao-frontal', nome: 'Elevação frontal', grupo: 'Deltoide anterior', equip: 'Halteres', series: 3, reps: 12, kg: 8, img: 'elevacao-frontal' },
+        { id: 'crucifixo-inverso', nome: 'Crucifixo inverso', grupo: 'Deltoide posterior', equip: 'Máquina', series: 4, reps: 12, kg: 30, img: 'crucifixo-inverso' },
+        { id: 'encolhimento-barra', nome: 'Encolhimento com barra', grupo: 'Trapézio', equip: 'Barra', series: 3, reps: 12, kg: 60, img: 'encolhimento-barra' }
       ]
     },
     {
       id: 'bracos', letra: 'E', nome: 'Braços', subtitulo: 'Braços', tipo: 'forca', ilustracao: 'bracos', descanso: 60, minutos: 45,
       musculos: ['Bíceps', 'Tríceps', 'Antebraço'], equipamentos: ['Barra', 'Barra W', 'Halteres', 'Polia'],
       exercicios: [
-        { id: 'rosca-direta', nome: 'Rosca direta', grupo: 'Bíceps', equip: 'Barra', series: 4, reps: 10, kg: 30 },
-        { id: 'triceps-testa', nome: 'Tríceps testa', grupo: 'Tríceps', equip: 'Barra W', series: 4, reps: 10, kg: 25 },
-        { id: 'rosca-martelo', nome: 'Rosca martelo', grupo: 'Bíceps', equip: 'Halteres', series: 3, reps: 12, kg: 14 },
+        { id: 'rosca-direta', nome: 'Rosca direta', grupo: 'Bíceps', equip: 'Barra', series: 4, reps: 10, kg: 30, img: 'rosca-direta' },
+        { id: 'triceps-testa', nome: 'Tríceps testa', grupo: 'Tríceps', equip: 'Barra W', series: 4, reps: 10, kg: 25, img: 'triceps-testa' },
+        { id: 'rosca-martelo', nome: 'Rosca martelo', grupo: 'Bíceps', equip: 'Halteres', series: 3, reps: 12, kg: 14, img: 'rosca-martelo' },
         { id: 'triceps-corda-b', nome: 'Tríceps corda', grupo: 'Tríceps', equip: 'Polia', series: 3, reps: 12, kg: 25, img: 'triceps-corda' },
-        { id: 'rosca-concentrada', nome: 'Rosca concentrada', grupo: 'Bíceps', equip: 'Halter', series: 3, reps: 12, kg: 12 },
-        { id: 'rosca-punho', nome: 'Rosca de punho', grupo: 'Antebraço', equip: 'Barra', series: 3, reps: 15, kg: 20 }
+        { id: 'rosca-concentrada', nome: 'Rosca concentrada', grupo: 'Bíceps', equip: 'Halter', series: 3, reps: 12, kg: 12, img: 'rosca-concentrada' },
+        { id: 'rosca-punho', nome: 'Rosca de punho', grupo: 'Antebraço', equip: 'Barra', series: 3, reps: 15, kg: 20, img: 'rosca-punho' }
       ]
     },
     {
       id: 'abdomen', letra: 'F', nome: 'Abdômen', subtitulo: 'Core', tipo: 'forca', ilustracao: 'abdomen', descanso: 45, minutos: 25,
       musculos: ['Reto abdominal', 'Oblíquos', 'Lombar'], equipamentos: ['Peso corporal', 'Polia', 'Roda'],
       exercicios: [
-        { id: 'abdominal-infra', nome: 'Abdominal infra', grupo: 'Reto abdominal', equip: 'Banco', series: 3, reps: 15, kg: 0 },
-        { id: 'prancha', nome: 'Prancha', grupo: 'Core', equip: 'Peso corporal', series: 3, reps: 45, kg: 0, unidade: 's' },
-        { id: 'abdominal-polia', nome: 'Abdominal na polia', grupo: 'Reto abdominal', equip: 'Polia', series: 3, reps: 12, kg: 30 },
-        { id: 'abdominal-obliquo', nome: 'Abdominal oblíquo', grupo: 'Oblíquos', equip: 'Peso corporal', series: 3, reps: 15, kg: 0 },
-        { id: 'roda-abdominal', nome: 'Roda abdominal', grupo: 'Core', equip: 'Roda', series: 3, reps: 10, kg: 0 }
+        { id: 'abdominal-infra', nome: 'Abdominal infra', grupo: 'Reto abdominal', equip: 'Banco', series: 3, reps: 15, kg: 0, img: 'abdominal-infra' },
+        { id: 'prancha', nome: 'Prancha', grupo: 'Core', equip: 'Peso corporal', series: 3, reps: 45, kg: 0, unidade: 's', img: 'prancha' },
+        { id: 'abdominal-polia', nome: 'Abdominal na polia', grupo: 'Reto abdominal', equip: 'Polia', series: 3, reps: 12, kg: 30, img: 'abdominal-polia' },
+        { id: 'abdominal-obliquo', nome: 'Abdominal oblíquo', grupo: 'Oblíquos', equip: 'Peso corporal', series: 3, reps: 15, kg: 0, img: 'abdominal-obliquo' },
+        { id: 'roda-abdominal', nome: 'Roda abdominal', grupo: 'Core', equip: 'Roda', series: 3, reps: 10, kg: 0, img: 'roda-abdominal' }
       ]
     },
     {
