@@ -355,7 +355,7 @@ function vTreino() {
         <span class="sn" style="font-weight:600">${i + 1}</span><span class="muted" style="font-size:13px">${esc(ant)}</span>
         <label><span class="sr">Carga série ${i + 1}</span><input data-set="${i}" data-f="kg" inputmode="decimal" value="${esc(fmtNum(s.kg))}"></label>
         <label><span class="sr">${e.unidade === 's' ? 'Segundos' : 'Reps'} série ${i + 1}</span><input data-set="${i}" data-f="reps" inputmode="numeric" value="${esc(s.reps)}"></label>
-        <button class="check${s.feita ? ' on' : ''}" data-a="setcheck" data-i="${i}" aria-pressed="${s.feita}" aria-label="${s.feita ? 'Desmarcar' : 'Marcar'} série ${i + 1}">${s.feita ? ic('check', 20, 2.5) : ''}</button></div>`;
+        <button class="check${s.feita ? ' on' : ''}" data-a="setcheck" data-i="${i}" aria-pressed="${s.feita}" aria-label="${s.feita ? 'Desmarcar' : 'Concluir'} série ${i + 1}">${ic('check', 22, s.feita ? 3 : 2.25)}</button></div>`;
     }).join('');
     const guia = GUIAS[e.exId];
     const prox = a.exercicios[a.atual + 1];
@@ -367,9 +367,10 @@ function vTreino() {
           <div class="muted" style="font-size:13px;margin-top:2px">${esc(e.equip || '')}${e.descanso ? ` · descanso ${e.descanso}s` : ''}</div></div>
         ${pr ? `<span class="badge" style="flex:none">PR ${fmtNum(pr)} kg</span>` : ''}
       </div>
-      <div class="setgrid sethead"><span>Série</span><span>Anterior</span><span>Kg</span><span>${e.unidade === 's' ? 'Seg' : 'Reps'}</span><span></span></div>
+      <div class="setgrid sethead"><span>Série</span><span>Anterior</span><span>Kg</span><span>${e.unidade === 's' ? 'Seg' : 'Reps'}</span><span style="text-align:center">Feito</span></div>
       ${rows}
       <button class="pill" style="align-self:flex-start;border-style:dashed" data-a="setadd">${ic('plus', 16)}Adicionar série</button>
+      <div class="muted" style="font-size:12px;display:flex;align-items:center;gap:6px">${ic('check', 14)}Toque no ✓ ao terminar a série. O descanso começa sozinho.</div>
       ${prox ? `<div class="muted" style="font-size:13px">A seguir: ${esc(prox.nome)}</div>` : ''}
     </div>`;
   }

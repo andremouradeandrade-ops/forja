@@ -116,8 +116,10 @@ a{color:var(--primary-text)}
 .setrow.cur{outline:2px solid var(--primary)}
 .setrow input{width:100%;height:40px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-family:var(--display);font-weight:700;font-size:20px;text-align:center;padding:0}
 .setrow.done input{background:transparent;border-color:transparent}
-.check{width:40px;height:40px;border-radius:16px;border:2px solid var(--primary);background:none;color:var(--on-primary);display:flex;align-items:center;justify-content:center;padding:0}
-.check.on{background:var(--primary);border-color:var(--primary)}
+.check{width:44px;height:44px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--muted);display:flex;align-items:center;justify-content:center;padding:0;transition:transform .12s,background .15s}
+.check:active{transform:scale(.9)}
+.setrow.cur .check{border-color:var(--primary);color:var(--primary);background:rgba(255,184,28,.12)}
+.check.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
 .qbtn{flex:none;width:40px;height:40px;border-radius:999px;border:1.5px solid var(--line);color:var(--ink);background:none;font-weight:700;font-size:16px}
 .exnav{display:flex;gap:8px;padding:16px}
 .exnav .btn{height:48px;font-size:15px}
