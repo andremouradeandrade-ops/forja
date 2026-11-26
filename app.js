@@ -59,8 +59,15 @@ const ic = (n, size = 20, sw = 2, extra = '') => `<svg width="${size}" height="$
 
 /* ---------- estado ---------- */
 function fresh() { return { v: 1, fichas: clone(SEED.fichas), sessoes: [], ativa: null, descanso: null, meta: 4, avisouNotif: false }; }
+// Leva ilustrações novas do app para fichas já salvas no aparelho (sem mexer nas edições).
+function addImgs(st) {
+  const imgs = {}; SEED.fichas.forEach((f) => (f.exercicios || []).forEach((e) => { if (e.img) imgs[e.id] = e.img; }));
+  st.fichas.forEach((f) => (f.exercicios || []).forEach((e) => { if (!e.img && imgs[e.id]) e.img = imgs[e.id]; }));
+  if (st.ativa && st.ativa.exercicios) st.ativa.exercicios.forEach((e) => { if (!e.img && imgs[e.exId]) e.img = imgs[e.exId]; });
+  return st;
+}
 function load() {
-  try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 1 && Array.isArray(s.fichas)) return s; } } catch (e) { /* armazenamento indisponível */ }
+  try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 1 && Array.isArray(s.fichas)) return addImgs(s); } } catch (e) { /* armazenamento indisponível */ }
   return fresh();
 }
 let S = load();

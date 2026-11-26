@@ -5,24 +5,24 @@ window.FORJA_SEED = {
       id: 'peito', letra: 'A', nome: 'Peito', subtitulo: 'Peito e tríceps', tipo: 'forca', ilustracao: 'peito', descanso: 90, minutos: 55,
       musculos: ['Peitoral', 'Ombros', 'Tríceps'], equipamentos: ['Barra', 'Halteres', 'Polia', 'Máquinas'],
       exercicios: [
-        { id: 'supino-reto', nome: 'Supino reto', grupo: 'Peitoral', equip: 'Barra', series: 4, reps: 8, kg: 70 },
+        { id: 'supino-reto', nome: 'Supino reto', grupo: 'Peitoral', equip: 'Barra', series: 4, reps: 8, kg: 70, img: 'supino-reto' },
         { id: 'supino-inclinado', nome: 'Supino inclinado', grupo: 'Peitoral superior', equip: 'Barra', series: 4, reps: 10, kg: 50, img: 'supino' },
-        { id: 'crucifixo-maquina', nome: 'Crucifixo na máquina', grupo: 'Peitoral', equip: 'Máquina', series: 3, reps: 12, kg: 40 },
-        { id: 'crossover', nome: 'Crossover', grupo: 'Peitoral', equip: 'Polia', series: 3, reps: 12, kg: 15 },
-        { id: 'flexao', nome: 'Flexão de braço', grupo: 'Peitoral', equip: 'Peso corporal', series: 3, reps: 15, kg: 0 },
-        { id: 'triceps-corda', nome: 'Tríceps corda', grupo: 'Tríceps', equip: 'Polia', series: 3, reps: 12, kg: 25 }
+        { id: 'crucifixo-maquina', nome: 'Crucifixo na máquina', grupo: 'Peitoral', equip: 'Máquina', series: 3, reps: 12, kg: 40, img: 'crucifixo-maquina' },
+        { id: 'crossover', nome: 'Crossover', grupo: 'Peitoral', equip: 'Polia', series: 3, reps: 12, kg: 15, img: 'crossover' },
+        { id: 'flexao', nome: 'Flexão de braço', grupo: 'Peitoral', equip: 'Peso corporal', series: 3, reps: 15, kg: 0, img: 'flexao' },
+        { id: 'triceps-corda', nome: 'Tríceps corda', grupo: 'Tríceps', equip: 'Polia', series: 3, reps: 12, kg: 25, img: 'triceps-corda' }
       ]
     },
     {
       id: 'costas', letra: 'B', nome: 'Costas', subtitulo: 'Costas', tipo: 'forca', ilustracao: 'costas', descanso: 90, minutos: 50,
       musculos: ['Dorsais', 'Trapézio', 'Lombar'], equipamentos: ['Máquinas', 'Barra', 'Polia', 'Halteres'],
       exercicios: [
-        { id: 'puxada-frontal', nome: 'Puxada frontal', grupo: 'Dorsais', equip: 'Máquina', series: 4, reps: 10, kg: 60 },
-        { id: 'remada-curvada', nome: 'Remada curvada', grupo: 'Dorsais', equip: 'Barra', series: 4, reps: 8, kg: 50 },
-        { id: 'remada-baixa', nome: 'Remada baixa', grupo: 'Dorsais', equip: 'Polia', series: 3, reps: 12, kg: 55 },
-        { id: 'pulldown', nome: 'Pulldown braços estendidos', grupo: 'Dorsais', equip: 'Polia', series: 3, reps: 12, kg: 30 },
-        { id: 'encolhimento-halteres', nome: 'Encolhimento', grupo: 'Trapézio', equip: 'Halteres', series: 3, reps: 12, kg: 24 },
-        { id: 'hiperextensao', nome: 'Hiperextensão lombar', grupo: 'Lombar', equip: 'Banco', series: 3, reps: 15, kg: 0 }
+        { id: 'puxada-frontal', nome: 'Puxada frontal', grupo: 'Dorsais', equip: 'Máquina', series: 4, reps: 10, kg: 60, img: 'puxada-frontal' },
+        { id: 'remada-curvada', nome: 'Remada curvada', grupo: 'Dorsais', equip: 'Barra', series: 4, reps: 8, kg: 50, img: 'remada-curvada' },
+        { id: 'remada-baixa', nome: 'Remada baixa', grupo: 'Dorsais', equip: 'Polia', series: 3, reps: 12, kg: 55, img: 'remada-baixa' },
+        { id: 'pulldown', nome: 'Pulldown braços estendidos', grupo: 'Dorsais', equip: 'Polia', series: 3, reps: 12, kg: 30, img: 'pulldown' },
+        { id: 'encolhimento-halteres', nome: 'Encolhimento', grupo: 'Trapézio', equip: 'Halteres', series: 3, reps: 12, kg: 24, img: 'encolhimento-halteres' },
+        { id: 'hiperextensao', nome: 'Hiperextensão lombar', grupo: 'Lombar', equip: 'Banco', series: 3, reps: 15, kg: 0, img: 'hiperextensao' }
       ]
     },
     {
@@ -56,7 +56,7 @@ window.FORJA_SEED = {
         { id: 'rosca-direta', nome: 'Rosca direta', grupo: 'Bíceps', equip: 'Barra', series: 4, reps: 10, kg: 30 },
         { id: 'triceps-testa', nome: 'Tríceps testa', grupo: 'Tríceps', equip: 'Barra W', series: 4, reps: 10, kg: 25 },
         { id: 'rosca-martelo', nome: 'Rosca martelo', grupo: 'Bíceps', equip: 'Halteres', series: 3, reps: 12, kg: 14 },
-        { id: 'triceps-corda-b', nome: 'Tríceps corda', grupo: 'Tríceps', equip: 'Polia', series: 3, reps: 12, kg: 25 },
+        { id: 'triceps-corda-b', nome: 'Tríceps corda', grupo: 'Tríceps', equip: 'Polia', series: 3, reps: 12, kg: 25, img: 'triceps-corda' },
         { id: 'rosca-concentrada', nome: 'Rosca concentrada', grupo: 'Bíceps', equip: 'Halter', series: 3, reps: 12, kg: 12 },
         { id: 'rosca-punho', nome: 'Rosca de punho', grupo: 'Antebraço', equip: 'Barra', series: 3, reps: 15, kg: 20 }
       ]
