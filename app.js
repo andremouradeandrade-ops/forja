@@ -243,21 +243,22 @@ function vSheet(panel) {
       <div style="padding:20px 28px 28px;border-top:1px solid var(--raised)"><button class="btn" data-a="start" data-id="${esc(f.id)}">${esc(cta)}</button></div>
     </aside>`;
   }
+  const stats = f.tipo === 'cardio'
+    ? (S.sessoes.find((s) => s.fichaId === f.id) ? rows.map((r) => [String(r[1]).replace(' /km', ''), r[0] === 'Ritmo' ? 'Ritmo /km' : r[0]]) : [[f.etapas.length, 'etapas'], [`~${f.minutos}`, 'minutos']])
+    : [[f.exercicios.length, 'exercícios'], [f.exercicios.reduce((a, e) => a + Number(e.series || 0), 0), 'séries'], [`~${f.minutos}`, 'minutos']];
+  const focus = f.tipo === 'cardio' ? meta : f.musculos.join(' · ');
   return `<div class="overlay">
     <button class="backdrop" data-a="closesheet" aria-label="Fechar"></button>
     <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(f.nome)}">
-      <div style="display:flex;align-items:center;gap:16px">
-        <div style="width:80px;height:80px;flex:none">${ill(f.ilustracao, 80)}</div>
-        <div style="flex:1;min-width:0"><div class="eyebrow y">${esc(tag)}</div><div class="h1">${esc(f.nome)}</div></div>
-        <button data-a="closesheet" aria-label="Fechar" style="flex:none;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,184,28,.48);background:rgba(26,28,32,.56);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:0">${ic('close')}</button>
-      </div>
-      <div class="muted" style="font-size:14px;line-height:24px;margin-top:8px">${esc(meta)}</div>
-      <div class="chips">${f.musculos.map((m) => `<span class="chip sm">${esc(m)}</span>`).join('')}</div>
-      <div style="margin-top:16px;padding-top:8px;border-top:1px solid rgba(255,184,28,.32)">
-        ${rows.map((r, i) => `<div class="sheet-row"><span class="n">${f.tipo === 'cardio' ? '·' : i + 1}</span><span class="t">${esc(r[0])}</span><span class="num" style="font-size:14px">${esc(r[1])}</span></div>`).join('')}
-        <button class="link" data-a="go" data-to="ficha/${esc(f.id)}">${esc(more)}${ic('chev', 16)}</button>
-      </div>
-      <button class="btn" style="margin-top:12px" data-a="start" data-id="${esc(f.id)}">${esc(cta)}</button>
+      <div class="grab" aria-hidden="true"></div>
+      <button class="sheet-x" data-a="closesheet" aria-label="Fechar">${ic('close')}</button>
+      <div style="display:flex;justify-content:center;margin-top:16px"><div style="width:128px;height:128px">${ill(f.ilustracao, 128)}</div></div>
+      <div class="eyebrow y" style="margin-top:8px">${esc(tag)}</div>
+      <div class="h1">${esc(f.nome)}</div>
+      <div class="sheet-stats" style="grid-template-columns:repeat(${stats.length},minmax(0,1fr))">${stats.map((x) => `<div><span class="num">${esc(x[0])}</span><span class="l">${esc(x[1])}</span></div>`).join('')}</div>
+      <div class="muted" style="font-size:14px;line-height:24px;margin-top:16px">${esc(focus)}</div>
+      <button class="btn" style="margin-top:24px" data-a="start" data-id="${esc(f.id)}">${esc(cta)}</button>
+      <button class="btn-sec" data-a="go" data-to="ficha/${esc(f.id)}">${esc(more)}</button>
     </div></div>`;
 }
 
